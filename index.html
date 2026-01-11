@@ -83,6 +83,22 @@
             opacity: 0.4;
         }
 
+        .funny-gif {
+            width: 100%;
+            max-width: 420px;
+            margin: 24px auto 0;
+            border-radius: 14px;
+            display: block;
+            object-fit: cover;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .funny-gif.loading {
+            opacity: 0.4;
+        }
+
         .refresh-btn {
             margin-top: 40px;
             padding: 16px 32px;
@@ -167,6 +183,7 @@
             </svg>
             
             <p class="quote-text" id="quoteText">Loading inspiration...</p>
+            <img class="funny-gif" id="funnyGif" src="" alt="Funny reaction gif">
             <p class="quote-author" id="quoteAuthor">—</p>
             
             <button class="refresh-btn" id="refreshBtn" onclick="fetchQuote()">
@@ -185,6 +202,7 @@
     <script>
         const quoteText = document.getElementById('quoteText');
         const quoteAuthor = document.getElementById('quoteAuthor');
+        const funnyGif = document.getElementById('funnyGif');
         const refreshBtn = document.getElementById('refreshBtn');
         const errorMessage = document.getElementById('errorMessage');
 
@@ -199,10 +217,20 @@
             { q: "Think different.", a: "Apple Inc." }
         ];
 
+        const funnyGifs = [
+            "https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif",
+            "https://media.giphy.com/media/26u4cqiYI30juCOGY/giphy.gif",
+            "https://media.giphy.com/media/3o7qE1YN7aBOFPRw8E/giphy.gif",
+            "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif",
+            "https://media.giphy.com/media/13CoXDiaCcCoyk/giphy.gif",
+            "https://media.giphy.com/media/26tPoyDhjiJ2g7rEs/giphy.gif"
+        ];
+
         async function fetchQuote() {
             // Set loading state
             quoteText.classList.add('loading');
             quoteAuthor.classList.add('loading');
+            funnyGif.classList.add('loading');
             refreshBtn.disabled = true;
             errorMessage.classList.remove('visible');
 
@@ -232,17 +260,22 @@
             // Animate out
             quoteText.style.opacity = '0';
             quoteAuthor.style.opacity = '0';
+            funnyGif.style.opacity = '0';
 
             setTimeout(() => {
                 // Update content
                 quoteText.textContent = `"${text.trim()}"`;
                 quoteAuthor.textContent = `— ${author}`;
+                const randomGif = funnyGifs[Math.floor(Math.random() * funnyGifs.length)];
+                funnyGif.src = randomGif;
                 
                 // Animate in
                 quoteText.classList.remove('loading');
                 quoteAuthor.classList.remove('loading');
+                funnyGif.classList.remove('loading');
                 quoteText.style.opacity = '1';
                 quoteAuthor.style.opacity = '1';
+                funnyGif.style.opacity = '1';
                 refreshBtn.disabled = false;
             }, 200);
         }
